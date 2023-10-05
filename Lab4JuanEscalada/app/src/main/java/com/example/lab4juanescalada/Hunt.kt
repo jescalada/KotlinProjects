@@ -5,8 +5,8 @@ class Hunt(private val minion: Minion) : Mission(minion), Repeatable {
         return minion.baseHealth * minion.baseSpeed * (0..4).random()
     }
 
-    override fun reward(): String {
-        return when (determineMissionTime()) {
+    override fun reward(time: Int): String {
+        return when (time) {
             in 11..20 -> "a mouse"
             in 21..30 -> "a fox"
             in 31..50 -> "a buffalo"

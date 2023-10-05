@@ -5,8 +5,8 @@ class Gather(private val minion: Minion) : Mission(minion), Repeatable {
         return minion.backpackSize * minion.baseSpeed * (0..4).random()
     }
 
-    override fun reward(): String {
-        return when (determineMissionTime()) {
+    override fun reward(time: Int): String {
+        return when (time) {
             in 10..21 -> "bronze"
             in 22..33 -> "silver"
             in 34..50 -> "gold"

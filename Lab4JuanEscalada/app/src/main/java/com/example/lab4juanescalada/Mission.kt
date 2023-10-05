@@ -5,10 +5,10 @@ abstract class Mission(private val minion: Minion) {
         missionListener.missionStart(minion)
         val time = determineMissionTime()
         missionListener.missionProgress()
-        missionListener.missionCompleted(minion, reward())
+        missionListener.missionCompleted(minion, reward(time))
     }
 
     abstract fun determineMissionTime(): Int
 
-    abstract fun reward(): String
+    abstract fun reward(time: Int): String
 }
