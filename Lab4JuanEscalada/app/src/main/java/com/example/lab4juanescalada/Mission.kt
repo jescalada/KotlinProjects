@@ -1,6 +1,6 @@
 package com.example.lab4juanescalada
 
-abstract class Mission(private val minion: Minion) {
+abstract class Mission(private val minion: Minion, private val item: Item? = null) {
     fun start(missionListener: MissionListener) {
         missionListener.missionStart(minion)
         val time = determineMissionTime()
