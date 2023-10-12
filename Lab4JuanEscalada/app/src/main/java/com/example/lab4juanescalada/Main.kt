@@ -8,11 +8,15 @@ package com.example.lab4juanescalada
 fun main() {
     val human = Human()
     val dwarf = Dwarf()
-    val archer = Archer()
+    val elf = Elf()
 
     val gatheringMission1 = Gather(human)
-    val huntingMission = Hunt(archer)
+    val huntingMission = Hunt(elf)
     val gatheringMission2 = Gather(dwarf)
+
+    val orc = Orc(elf)
+
+    val orcGatheringMission = Gather(orc)
 
     // Pass a MissionListener as an anonymous class
     gatheringMission1.start(
@@ -56,6 +60,26 @@ fun main() {
     )
 
     gatheringMission2.start(
+        object : MissionListener {
+            override fun missionStart(minion: Minion) {
+                val minionRaceParsed = if (minion.race[0].lowercase() in "aeiouy") "An ${minion.race}" else "A ${minion.race}"
+                println(minion.catchphrase)
+                println("$minionRaceParsed was sent off to gather some resources!")
+            }
+
+            override fun missionProgress() {
+                println("...\n...\n...")
+            }
+
+            override fun missionCompleted(minion: Minion, reward: String) {
+                val minionRaceParsed = if (minion.race[0].lowercase() in "aeiouy") "An ${minion.race}" else "A ${minion.race}"
+                println("$minionRaceParsed has returned from gathering, and found $reward!\n" +
+                        "=====================")
+            }
+        }
+    )
+
+    orcGatheringMission.repeat(5,
         object : MissionListener {
             override fun missionStart(minion: Minion) {
                 val minionRaceParsed = if (minion.race[0].lowercase() in "aeiouy") "An ${minion.race}" else "A ${minion.race}"
