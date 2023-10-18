@@ -1,28 +1,41 @@
 package com.example.deadlinebot
 
 import dev.kord.core.Kord
-import dev.kord.core.event.message.MessageCreateEvent
-import dev.kord.core.on
+import dev.kord.core.exception.KordInitializationException
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-suspend fun main() {
-    // Get bot token from .env
-    val token = System.getenv("BOT_TOKEN")
-    val kord = Kord(token?:"")
+suspend fun main() = runBlocking {
+    val token = DataHelper.loadBotTokenFromEnv("app/assets", "env")
 
-    kord.on<MessageCreateEvent> { // runs every time a message is created that our bot can read
-
-        // ignore other bots, even ourselves. We only serve humans here!
-        if (message.author?.isBot != false) return@on
-
-        // check if our command is being invoked
-        if (message.content != "!ping") return@on
-
-        // all clear, give them the pong!
-        message.channel.createMessage("pong!")
+    // Initialize bot
+    val kord: Kord
+    try {
+        kord = Kord(token)
+    } catch (e: KordInitializationException) {
+        println("Invalid token. Please check your env file at app/assets/env.")
+        return@runBlocking
     }
 
+    val deadlines = DataHelper.loadDeadlinesFromFile("app/assets/deadlines.txt")
+    val settings = mutableMapOf(
+        "autoremind" to "true",
+        "interval" to "[72, 24]"
+    )
+
+    val status = Status(deadlines, true, settings)
+
+    // Register message listener and pass in the bot's status
+    ListenerHelper.onMessageCreateEvent(kord, status)
+
+    // Run deadline interval listener asynchronously to trigger reminders
+    launch {
+        ListenerHelper.deadlineIntervalListener(status)
+    }
+
+    // Log bot into Discord
     kord.login {
         // we need to specify this to receive the content of messages
         @OptIn(PrivilegedIntent::class)
