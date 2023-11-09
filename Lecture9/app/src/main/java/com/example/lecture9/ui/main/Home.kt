@@ -2,8 +2,10 @@ package com.example.lecture9.ui.main
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,10 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.lecture9.R
 
 @Composable
-fun Home() {
+fun Home(navController: NavController) {
     val list = listOf(
         Character("Ahsoka", R.drawable.ahsoka),
         Character("BB8", R.drawable.bb8),
@@ -44,19 +47,22 @@ fun Home() {
         items(stateList.size) { index ->
             CharacterItem(stateList[index], clickHandler = {
                 stateList.removeAt(index)
-            })
+            }, navController = navController)
         }
     })
 }
 
 @Composable
-fun CharacterItem(character: Character, clickHandler: () -> Unit = {}) {
+fun CharacterItem(character: Character, navController: NavController, clickHandler: () -> Unit = {}) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .clickable {
+                navController.navigate("details/${character.name}/${character.imageId}")
+            }
             .padding(12.dp)
-            .background(Color(0xFF009688))
+            .background(Color(0xFF9177A3))
     ) {
         Text(
             character.name,
@@ -65,6 +71,7 @@ fun CharacterItem(character: Character, clickHandler: () -> Unit = {}) {
             modifier = Modifier.padding(12.dp)
         )
         IconButton(
+            // Juan Escalada A01285535
             onClick = { clickHandler() },
             modifier = Modifier.padding(12.dp)
         ) {
