@@ -13,4 +13,6 @@ interface UserDao {
     fun getAllUsers(): List<LocalUser>
     @Query("SELECT * FROM users WHERE uid = :id")
     fun getUser(id: Int): LocalUser
+    @Query("DELETE FROM users WHERE uid = :id")
+    fun deleteUser(id: Int)
 }
