@@ -27,25 +27,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lab9juanescalada.data.LocalUser
+import kotlin.math.sign
 
 @Composable
 fun MainContent(usersState: UsersState) {
     val signupState = remember { SignupState() }
 
-    val backgroundColor: Color = if (signupState.validEmail) {
-        Color.Green
-    } else {
-        Color.Red
-    }
-
     Column(modifier = Modifier.fillMaxWidth()) {
-        MyTextField("UID", signupState.uid, signupState.onUIDChange)
+        MyTextField("UID", if (signupState.uid != null) signupState.uid.toString() else "", signupState.onUIDChange)
         MyTextField("Name", signupState.name, signupState.onNameChange)
-        MyTextField("Email", signupState.email, signupState.onEmailChange)
+        MyTextField("Email", signupState.email, signupState.onEmailChange, valid=signupState.validEmail)
 
         Row(modifier = Modifier.fillMaxWidth().padding(vertical=12.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             Button(onClick = {
-                usersState.addUser(LocalUser(name=signupState.name, email=signupState.email))
+                usersState.addUser(LocalUser(uid=signupState.uid, name=signupState.name, email=signupState.email))
             }) {
                 Text(text = "Add", fontSize = 24.sp)
             }
@@ -59,7 +54,11 @@ fun MainContent(usersState: UsersState) {
 
         Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
             usersState.users.forEach { user ->
-                UserCard(user, usersState::deleteUser)
+                UserCard(user, usersState::deleteUser) {
+                    signupState.uid = it.uid
+                    signupState.name = it.name
+                    signupState.email = it.email
+                }
             }
         }
     }
@@ -67,9 +66,9 @@ fun MainContent(usersState: UsersState) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTextField(title: String, value: String, onValueChanged: (String) -> Unit) {
+fun MyTextField(title: String, value: String, onValueChanged: (String) -> Unit, valid: Boolean = true) {
     Column(modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp)) {
-        Text(text = title, fontSize = 16.sp)
+        Text(text = title, fontSize = 16.sp, color = if (valid) Color.Black else Color.Red)
         // value and onValueChange allow hoisting of state
         TextField(value = value, onValueChange = {
             onValueChanged(it)
@@ -77,9 +76,10 @@ fun MyTextField(title: String, value: String, onValueChanged: (String) -> Unit) 
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserCard(user: LocalUser, deleteUserCallback: (Int) -> Unit = {}) {
-    Card(shape = RoundedCornerShape(16.dp), modifier = Modifier.padding(4.dp).fillMaxWidth().padding(4.dp)) {
+fun UserCard(user: LocalUser, deleteUserCallback: (Int) -> Unit = {}, loadUserCallback: (LocalUser) -> Unit) {
+    Card(shape = RoundedCornerShape(16.dp), modifier = Modifier.padding(4.dp).fillMaxWidth().padding(4.dp), onClick = { loadUserCallback(user) } ) {
         Row(modifier = Modifier.padding(4.dp).fillMaxWidth().background(Color(0xFFE7D2EE)).padding(4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
             // Add rounded corners to the card
 
