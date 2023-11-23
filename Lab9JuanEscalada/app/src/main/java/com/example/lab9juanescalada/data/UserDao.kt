@@ -1,6 +1,8 @@
 package com.example.lab9juanescalada.data
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -15,4 +17,7 @@ interface UserDao {
     fun getUser(id: Int): LocalUser
     @Query("DELETE FROM users WHERE uid = :id")
     fun deleteUser(id: Int)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUser(user: LocalUser)
 }
