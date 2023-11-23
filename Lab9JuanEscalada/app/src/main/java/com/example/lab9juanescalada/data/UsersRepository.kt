@@ -10,6 +10,10 @@ class UsersRepository(private val userDao: UserDao) {
     }
 
     fun insertUser(user: LocalUser) {
-        userDao.insertUser(user.name, user.email)
+        userDao.insertUser(user)
+    }
+
+    fun deleteUser(id: Int) {
+        userDao.deleteUser(id)
     }
 }
