@@ -1,4 +1,4 @@
-package com.example.lecture11
+package com.example.pokeinfo
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

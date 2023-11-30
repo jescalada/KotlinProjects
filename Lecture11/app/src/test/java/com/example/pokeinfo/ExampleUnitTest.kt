@@ -1,4 +1,4 @@
-package com.example.lecture11
+package com.example.pokeinfo
 
 import org.junit.Test
 

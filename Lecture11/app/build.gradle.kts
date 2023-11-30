@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.lecture11"
+    namespace = "com.example.pokeinfo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.lecture11"
+        applicationId = "com.example.pokeinfo"
         minSdk = 30
         targetSdk = 33
         versionCode = 1
@@ -53,6 +53,8 @@ dependencies {
     implementation("io.ktor:ktor-client-android:2.3.0")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
     implementation("io.ktor:ktor-serialization-gson:2.3.0")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
