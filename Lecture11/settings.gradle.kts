@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Lecture11"
+rootProject.name = "PokeInfo"
 include(":app")
  
