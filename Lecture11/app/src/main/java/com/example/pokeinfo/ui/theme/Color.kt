@@ -1,4 +1,4 @@
-package com.example.lecture11.ui.theme
+package com.example.pokeinfo.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

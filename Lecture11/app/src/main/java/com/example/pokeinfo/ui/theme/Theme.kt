@@ -1,4 +1,4 @@
-package com.example.lecture11.ui.theme
+package com.example.pokeinfo.ui.theme
 
 import android.app.Activity
 import android.os.Build
