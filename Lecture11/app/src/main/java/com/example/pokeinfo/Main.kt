@@ -1,4 +1,4 @@
-package com.example.lecture11
+package com.example.pokeinfo
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
