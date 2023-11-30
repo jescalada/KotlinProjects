@@ -2,11 +2,8 @@ package com.example.pokeinfo.ui.main
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.text.capitalize
 import com.example.pokeinfo.data.Pokemon
 import com.example.pokeinfo.data.PokemonRepository
-import com.example.pokeinfo.data.Stat
-import com.example.pokeinfo.data.Type
 import kotlin.random.Random
 
 class PokemonState(private val pokemonRepository: PokemonRepository) {
@@ -30,5 +27,12 @@ class PokemonState(private val pokemonRepository: PokemonRepository) {
 //        val pokemonStats = pokemon.stats.map { Stat(name = it.name.capitalize(), value = it.value) }
         val pokemonId = pokemon.id.padStart(3, '0')
         return Pokemon(pokemonId, pokemonName, pokemon.sprites, pokemon.types, pokemon.stats)
+    }
+
+    suspend fun loadRandomPokemon() {
+        for (i in 1..9) {
+            val id = Random.nextInt(1, 1017)
+            addPokemonToList(getPokemon(id))
+        }
     }
 }
