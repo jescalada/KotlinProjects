@@ -1,6 +1,7 @@
 package com.example.lab4juanescalada
 
 import kotlin.properties.Delegates
+import kotlin.properties.Delegates.vetoable
 
 class Gather(private val minion: Minion, private val item: Item? = null) : Mission(minion, item), Repeatable {
     override fun determineMissionTime(): Int {
@@ -17,7 +18,7 @@ class Gather(private val minion: Minion, private val item: Item? = null) : Missi
         }
     }
 
-    override var repeatNum: Int by Delegates.vetoable(3) { _, _, new ->
+    override var repeatNum: Int by vetoable (3) { _, _, new ->
         if (new > 3) println("A minion cannot repeat gathering more than 3 times!")
         new <= 3
     }
