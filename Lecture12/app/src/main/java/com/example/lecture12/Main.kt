@@ -1,7 +1,9 @@
 package com.example.lecture12
 
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 //fun main() {
@@ -42,9 +44,14 @@ fun createSponge(consumer: Sponge.() -> Unit): Sponge {
 }
 // Juan Escalada A01285535
 fun main() {
-    val sponge = createSponge {
-        name = "Spongebob"
-    }
-
+    val sponge = createSponge { name = "Bob" }
     println(sponge)
+}
+
+suspend fun test() {
+    println("Executing test()")
+    delay(1000L)
+    println("2")
+    delay(1000L)
+    println("3")
 }
